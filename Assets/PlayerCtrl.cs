@@ -10,12 +10,13 @@ public class PlayerCtrl : MonoBehaviour {
     Rigidbody2D rb;
     SpriteRenderer spriteRenderer;
     Animator anim;
-    [Tooltip("A Non Negative Integer For Higher Movement in the Horizontal")]
+    [Tooltip("A Non Negative Integer For Higher Speed in the Horizontal Movement Plane")]
     public int SpeedBoost;
     public float JumpSpeed;
     public float delayDoubleJump;
     bool canDoubleJump = false;
     bool isJumping = false;
+    bool leftPressed, rightPressed;
     public bool isGrounded = true;
     public Transform Feet;
     public float feetRadius;
@@ -50,6 +51,11 @@ public class PlayerCtrl : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
             FireBullets();
+
+        if (leftPressed)
+            MoveHorizontal(-SpeedBoost);
+        if (rightPressed)
+            MoveHorizontal(SpeedBoost);
 
 	}
 
@@ -122,6 +128,29 @@ public class PlayerCtrl : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Ground"))
             isJumping = false;
+    }
+    // Mobile Commands For Movement
+    public void MobileMoveLeft()
+    {
+        leftPressed = true;
+    }
+    public void MobileMoveRight()
+    {
+        rightPressed = true;
+    }
+    public void MobileStop()
+    {
+        leftPressed = false;
+        rightPressed = false;
+        StopMoving();
+    }
+    public void MobileFireBullets()
+    {
+        FireBullets();
+    }
+    public void MobileJump()
+    {
+        Jump();
     }
     //Stop the Player From Moving
     void StopMoving ()
